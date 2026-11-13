@@ -1,11 +1,13 @@
-# Render Reverse Proxy & Apache Port Fixes
+# Render Apache Configuration
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /
 
-    # Strip internal container port (e.g., :10000) from external redirects
-    RewriteCond %{HTTP_HOST} ^([^:]+):[0-9]+$
-    RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+    # Health check route
+    RewriteRule ^healthz?$ health.php [L,NC]
+
+    # Handle repository and folder name aliases cleanly without 404
+    RewriteRule ^Hospital[-_]Management[-_]System/?(.*)$ /$1 [R=301,L,NC]
 
     # Handle directory trailing slash without leaking port
     RewriteCond %{REQUEST_FILENAME} -d
@@ -14,10 +16,10 @@
 </IfModule>
 
 <IfModule mod_dir.c>
-    DirectoryIndex index.php login.php
+    DirectoryIndex index.php login.php index.html
 </IfModule>
 
-# Security & Cache headers
+# Security & Header configurations
 <IfModule mod_headers.c>
     Header always set X-Content-Type-Options "nosniff"
     Header always set X-Frame-Options "SAMEORIGIN"

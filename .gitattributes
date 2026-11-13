@@ -1,0 +1,7 @@
+# Enforce LF for shell scripts across all platforms
+*.sh text eol=lf
+*.bash text eol=lf
+*.php text
+*.sql text
+Dockerfile text eol=lf
+.htaccess text eol=lf

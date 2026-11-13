@@ -1,0 +1,27 @@
+# Render Apache Configuration
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Health check route
+    RewriteRule ^healthz?$ health.php [L,NC]
+
+    # Handle repository and folder name aliases cleanly without 404
+    RewriteRule ^Hospital[-_]Management[-_]System/?(.*)$ /$1 [R=301,L,NC]
+
+    # Handle directory trailing slash without leaking port
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteCond %{REQUEST_URI} !/$
+    RewriteRule ^(.*)$ /$1/ [R=301,L]
+</IfModule>
+
+<IfModule mod_dir.c>
+    DirectoryIndex index.php login.php index.html
+</IfModule>
+
+# Security & Header configurations
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-XSS-Protection "1; mode=block"
+</IfModule>

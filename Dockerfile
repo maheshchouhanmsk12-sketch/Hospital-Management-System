@@ -24,13 +24,14 @@ WORKDIR /var/www/html
 # Copy all application files
 COPY . /var/www/html/
 
-# Ensure start.sh has executable permissions and unix line endings
-RUN chmod -R 755 /var/www/html \
+# Fix Windows CRLF line endings on start.sh and ensure executable permissions
+RUN sed -i 's/\r$//' /var/www/html/start.sh \
+    && chmod -R 755 /var/www/html \
     && chown -R www-data:www-data /var/www/html \
     && chmod +x /var/www/html/start.sh
 
 # Render dynamically sets $PORT (defaults to 10000)
 EXPOSE 10000
 
-# Start Apache via start.sh
-CMD ["/var/www/html/start.sh"]
+# Execute start.sh via bash directly
+ENTRYPOINT ["/bin/bash", "/var/www/html/start.sh"]
