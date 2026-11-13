@@ -1,0 +1,106 @@
+<?php 
+
+class Form{
+	private $_labelDistance; 
+	private $_method; 
+	
+	public function __construct($labelDistance, $method){
+		$this->_labelDistance = $labelDistance;
+		$this->_method = $method; 
+	}
+	
+	public function init(){
+		echo "<form class='form-horizontal' method='".$this->_method."' action='' >"; 
+	}
+	
+	private function getDivDistance(){
+		$divDistance = 12 - (int)$this->_labelDistance;
+		return $divDistance;
+	}
+	
+	public function textBox($label, $name, $type, $value, $additinalAttr){
+		if(empty($additinalAttr) || !is_array($additinalAttr)){
+			echo "
+			<div class='form-group'>
+				<label class='col-md-".$this->_labelDistance."'>$label</label>
+				<div class='col-md-".$this->getDivDistance()."'> 
+					<input type='$type' name='$name' value='".htmlspecialchars((string)$value, ENT_QUOTES)."' class='form-control' /> 
+				</div> 
+			</div> 
+			";
+		} else {
+			$formData = "
+			<div class='form-group'>
+				<label class='col-md-".$this->_labelDistance."'>$label</label>
+				<div class='col-md-".$this->getDivDistance()."'> 
+					<input type='$type' name='$name' value='".htmlspecialchars((string)$value, ENT_QUOTES)."' class='form-control' "; 
+					$start = 0; 
+					$attrCount = count($additinalAttr);
+					while($start < $attrCount){
+						$formData .= $additinalAttr[$start]." ";
+						$start ++; 
+					}
+			$formData .= " /></div> 
+			</div> 
+			";
+			echo $formData; 
+		}
+	}
+	
+	public function select($label, $name, $value, array $options){
+		$select =  "
+			<div class='form-group'>
+				<label class='col-md-".$this->_labelDistance."'>$label</label>
+				<div class='col-md-".$this->getDivDistance()."'> 
+					<select name='$name' class='form-control'> <option value=''>--Select--</option>"; 
+				
+					$start = 0; 
+					$optCount = count($options);
+					while($start < $optCount){
+						$opt = $options[$start];
+						$selected = ($opt == $value) ? "selected='selected'" : "";
+						$select .= "<option value='".htmlspecialchars($opt, ENT_QUOTES)."' $selected>".htmlspecialchars($opt)."</option>";
+						$start ++; 
+					}
+		$select .="
+					</select>
+				</div> 
+			</div> 
+		";
+		
+		echo $select; 
+	}
+	
+	public function textarea($label, $name, $value){
+		echo "
+			<div class='form-group'>
+				<label class='col-md-".$this->_labelDistance."'>$label</label>
+				<div class='col-md-".$this->getDivDistance()."'> 
+					<textarea class='form-control' name='$name' >".htmlspecialchars((string)$value)."</textarea>
+				</div> 
+			</div> 
+		";
+	}
+	
+	public function close($value){
+		if($value == ""){
+			echo "
+			<div class='form-group'>
+				<label class='col-md-".$this->_labelDistance."'></label>
+				<div class='col-md-".$this->getDivDistance()."'></div> 
+			</div> 
+			</form>
+			";
+		} else {
+			echo "
+			<div class='form-group'>
+				<label class='col-md-".$this->_labelDistance."'></label>
+				<div class='col-md-".$this->getDivDistance()."'>
+					<input type='submit' value='".htmlspecialchars($value, ENT_QUOTES)."' class='btn btn-primary' /> 
+				</div> 
+			</div> 
+			</form>
+			";
+		}
+	}
+}

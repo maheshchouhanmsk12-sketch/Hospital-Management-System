@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: hospital-management-system
+    runtime: docker
+    plan: free
+    region: oregon
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: DB_SERVER
+        value: mysql-1a85412b-maheshchouhanmsk12-c513.a.aivencloud.com
+      - key: DB_PORT
+        value: 26284
+      - key: DB_USERNAME
+        value: avnadmin
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_NAME
+        value: hospital
+      - key: DB_SSL
+        value: "true"
+      - key: BASE_URL
+        generateValue: false
