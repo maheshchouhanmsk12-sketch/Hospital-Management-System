@@ -1,5 +1,3 @@
-
-
 <nav role="navigation" class="navbar navbar-default real-nav" >
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -21,9 +19,8 @@
                <li><a href='login.php'>Login</a></li>
                <?php } else {
                 ?> 
-
-               <!-- <li><a href='profile.php?token=<?php //echo $token; ?> '>Hello <?php// echo $userFirstName." ".$userSecondName; ?>,</a></li>--> 
-			    <li><a href='logout.php'>Logout</a></li>
+               <li><a href='profile.php?token=<?php echo htmlspecialchars($userToken ?? ""); ?>'>Hello <?php echo htmlspecialchars(($userFirstName ?? "") . " " . ($userSecondName ?? "")); ?></a></li>
+			   <li><a href='logout.php'>Logout</a></li>
                 <?php 
                } ?>
             </ul>
