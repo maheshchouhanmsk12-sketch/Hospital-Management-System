@@ -24,8 +24,15 @@ WORKDIR /var/www/html
 # Copy all application files
 COPY . /var/www/html/
 
-# Fix Windows CRLF line endings on start.sh and ensure executable permissions
+# Fix Windows CRLF line endings on start.sh, create class aliases for Linux, and ensure executable permissions
 RUN sed -i 's/\r$//' /var/www/html/start.sh \
+    && cd /var/www/html/classes \
+    && for f in *.class.php; do \
+        lower=$(echo "$f" | tr '[:upper:]' '[:lower:]'); \
+        upper=$(echo "$f" | tr '[:lower:]' '[:upper:]'); \
+        [ "$f" != "$lower" ] && [ ! -e "$lower" ] && cp "$f" "$lower" || true; \
+        [ "$f" != "$upper" ] && [ ! -e "$upper" ] && cp "$f" "$upper" || true; \
+    done \
     && chmod -R 755 /var/www/html \
     && chown -R www-data:www-data /var/www/html \
     && chmod +x /var/www/html/start.sh

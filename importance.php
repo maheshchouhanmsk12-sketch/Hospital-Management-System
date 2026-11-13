@@ -8,18 +8,49 @@ if (session_status() === PHP_SESSION_NONE) {
 	@session_start();
 }
 
-// classes autoload (PHP 8.x compatible)
+// Case-insensitive autoloader for Linux compatibility
 spl_autoload_register(function($file){
-	$file1 = __DIR__ . "/classes/{$file}.class.php";
-	$file2 = __DIR__ . "/classes/{$file}.php";
-	if (file_exists($file1)) {
-		require_once $file1;
-	} elseif (file_exists($file2)) {
-		require_once $file2;
+	$dir = __DIR__ . "/classes";
+	$candidates = [
+		"$dir/{$file}.class.php",
+		"$dir/" . ucfirst(strtolower($file)) . ".class.php",
+		"$dir/" . strtolower($file) . ".class.php",
+		"$dir/" . strtoupper($file) . ".class.php",
+		"$dir/{$file}.php",
+		"$dir/" . ucfirst(strtolower($file)) . ".php",
+	];
+
+	foreach ($candidates as $cand) {
+		if (file_exists($cand)) {
+			require_once $cand;
+			return;
+		}
+	}
+
+	// Dynamic case-insensitive scanning of classes directory
+	if (is_dir($dir)) {
+		$files = scandir($dir);
+		foreach ($files as $f) {
+			if (strcasecmp($f, "{$file}.class.php") === 0 || strcasecmp($f, "{$file}.php") === 0) {
+				require_once "$dir/$f";
+				return;
+			}
+		}
 	}
 });
 
-// functions
+// Pre-load core classes to eliminate any case-sensitivity delays
+require_once __DIR__ . "/classes/Config.class.php";
+require_once __DIR__ . "/classes/Db.class.php";
+require_once __DIR__ . "/classes/User.class.php";
+require_once __DIR__ . "/classes/Messages.class.php";
+
+if (!class_exists('CONFIG', false)) {
+	class_alias('Config', 'CONFIG');
+}
+if (!class_exists('DB', false)) {
+	class_alias('Db', 'DB');
+}
 
 // initialize user variables safely
 $userFirstName = "";

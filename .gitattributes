@@ -5,3 +5,4 @@
 *.sql text
 Dockerfile text eol=lf
 .htaccess text eol=lf
+
