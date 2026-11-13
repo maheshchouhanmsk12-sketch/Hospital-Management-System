@@ -33,7 +33,11 @@ class Config{
 
 	public static function getDbName(){
 		$val = getenv('DB_NAME') ?: (getenv('DB_DATABASE') ?: null);
-		return (!empty($val)) ? $val : 'hospital';
+		// Prefer dedicated hospital database over Aiven shared defaultdb
+		if (!empty($val) && strtolower((string)$val) !== 'defaultdb') {
+			return $val;
+		}
+		return 'hospital';
 	}
 
 	public static function getSsl(){
