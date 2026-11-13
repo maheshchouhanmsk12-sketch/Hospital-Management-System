@@ -1,41 +1,58 @@
-Free Download Source Code "Hospital Management System"
+Hospital Management System (EMR) - LIVE DEPLOYMENT
 
-FIRST Download
+LIVE URL: https://hospital-management-system-ktrh.onrender.com/
+GITHUB REPO: https://github.com/maheshchouhanmsk12-sketch/Hospital-Management-System
 
-1.XAMPP
+==================================================
+ALL LOGIN DETAILS & PASSWORDS
+==================================================
 
-2."TEXT EDITOR" NOTEPAD++ OR SUBLIME TEXT 3 / ETC.
+1. ADMIN ACCOUNTS (status: 1)
+   Login URL: https://hospital-management-system-ktrh.onrender.com/login.php?attempt=1
+   
+   Account 1 (Primary):
+   Email:    bensontesting@gmail.com
+   Password: programming
+   
+   Account 2 (Secondary):
+   Email:    admin@admin.com
+   Password: admin123
 
-3"Hospital_Management_System"
+2. DOCTOR ACCOUNTS (status: 2)
+   Login URL: https://hospital-management-system-ktrh.onrender.com/login.php?attempt=2
+   
+   Doctor 1:
+   Email:    totonajoyce@gmail.com
+   Password: 12345
+   Role:     Surgeon
+   
+   Doctor 2:
+   Email:    bensonwainaina30gmail.com
+   Password: hospital
+   Role:     Clinical Officer
 
-4. Download the zip file/ download winrar
+3. PATIENT ACCOUNTS
+   Login URL: https://hospital-management-system-ktrh.onrender.com/login-patient.php
+   
+   Patient 1:
+   Phone:          0725667841
+   Patient Number: 4066
+   Name:           Benson Karue
+   
+   Patient 2:
+   Phone:          0713345678
+   Patient Number: 1234
+   Name:           Testing Data
 
-5. Extract the file and copy "Hospital_Management_System" folder
+==================================================
+AIVEN CLOUD MYSQL DETAILS
+==================================================
+Host:     mysql-1a85412b-maheshchouhanmsk12-c513.a.aivencloud.com
+Port:     26284
+Database: hospital
+User:     avnadmin
+SSL:      Enabled (require_secure_transport=ON)
+Tables:   appointment, hiv, outbreaks, patients, users
 
-6.Paste inside root directory/ where you install xammp local disk C: drive D: drive E: paste: (for xampp/htdocs, 
-
-7. Open PHPMyAdmin (http://localhost/phpmyadmin)
-
-8. Create a database with name hospital
-
-6. Import hospital.sql file(given inside the zip package in SQL file folder)
-
-7.Run the script http://localhost/Hospital_Management_System
-
-
-**LOGIN DETAILS** 
-
-Doctor
-user: totonajoyce@gmail.com
-pass: 12345
-
-Admin
-user: bensontesting@gmail.com
-pass: programming
-
-Patient
-user: 0725667841
-pass: 4066
-
-****** https:1sourcecodr.blogspot.com ******
-Subcribe my You tube Channel **** 1 Source code ****
+DB Setup & Diagnostics:
+URL: https://hospital-management-system-ktrh.onrender.com/db_setup.php
