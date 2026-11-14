@@ -107,43 +107,58 @@ class Patient{
 		";
 	}
 	
-	public static function getPRecords(){
-		$query = Db::fetch("patients", "", "", "", "id DESC", "", "number");
+	public static function patientsBooks(){
+		$query = Db::fetch("patients", "", "", "", "id DESC", "", ""); 
 		if(Db::count($query)){
-			echo "<div class='form-holder'>
-					<table class='table table-bordered table-stripped'> 
+			$count = Db::count($query);
+			$countP = ($count == 1) ? "1 Record" : "$count Records";
+			echo "<div class='badge-header'>$countP</div>"; 
+			
+			echo "<div class='form-holder'><table class='table table-bordered table-striped'>";
+		    echo "
 					<tr>
-						<td><strong>Patient Number</strong></td>
-						<td><strong>Full Name</strong></td>
-						<td><strong>Phone</strong></td>
-						<td><strong>Date of Birth</strong></td>
+						<td><strong>Name</strong></td>
+						<td><strong>Location</strong></td>
+						<td><strong>Age</strong></td>
 						<td><strong>Attended</strong></td>
-						<td><strong>Action</strong></td>
+						<td><strong>Doctor</strong></td>
+						<td><strong>Print</strong></td>
 					</tr>
 			"; 
 			while($data = Db::assoc($query)){
-				$number = htmlspecialchars($data['number']);
-				$name = htmlspecialchars($data['name']);
-				$phone = htmlspecialchars($data['phone']);
-				$dateOfBirth = htmlspecialchars($data['dateOfBirth']);
-				$count = Db::getCount("patients", "number = ? ", $number, "", "");
+				$token = $data['token'];
+				$name = htmlspecialchars(self::get($token, "name"));
+				$location = htmlspecialchars(self::get($token, "location")); 
+				$age = htmlspecialchars(self::get($token, "age")); 
+				$time = isset($data['cTime']) ? $data['cTime'] : time(); 
+				$date = date("d/m/Y", (int)$time);
+				$doctor = self::get($token, "doctor");
+				$docFirstName = User::get($doctor, "firstName");
+				$docSecondName = User::get($doctor, "secondName");
+				$docName = htmlspecialchars(trim("$docFirstName $docSecondName"));
+				if (empty($docName)) {
+					$docName = "Doctor";
+				}
 				
 				echo "
 					<tr>
-						<td>$number</td>
 						<td>$name</td>
-						<td>$phone</td>
-						<td>$dateOfBirth</td>
-						<td>$count</td>
-						<td><a href='patient-data.php?patient=$number'>View History</a></td>
+						<td>$location</td>
+						<td>$age</td>
+						<td>$date</td>
+						<td>$docName</td>
+						<td><a href='print.php?patient=$token'>Print</a></td>
 					</tr>
 			"; 
 			}
-			
 			echo "</table></div>";
 		} else {
-			Messages::info("There are no patient records currently.");
+			Messages::info("There are no records at the moment."); 
 		}
+	}
+
+	public static function getPRecords(){
+		self::patientsBooks();
 	}
 	
 	public static function getPatientHistory($patient){
